@@ -1,73 +1,116 @@
-# React + TypeScript + Vite
+# ArrayViz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ArrayViz is a lightweight, frontend-first app for learning and visualizing array data-structures and common array algorithms. It focuses on clear, interactive visual explanations to help beginners and interview prep learners master array patterns and operations.
 
-Currently, two official plugins are available:
+🚀 Built with React, TypeScript, Vite, and Tailwind CSS
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
+- Interactive playground for visualizing array operations (insert, delete, traverse)
+- Concept pages that explain array fundamentals, time/space complexity, and memory layout
+- Problem list (coming soon) grouped by difficulty and pattern
+- Visual-first approach with concise examples and step-by-step illustrations
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
+- React + TypeScript
+- Vite for fast dev/build
+- Tailwind CSS for styling
+- ESLint + Prettier for linting
 
-## Expanding the ESLint configuration
+## Demo / Routes
+- / — Home: Overview and mini visual demo
+- /playground — Interactive array playground
+- /concepts — Concept pages and fundamentals
+- /problems — Practice problems list (work-in-progress)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Prerequisites:
+- Node.js >= 18 (recommended)
+- npm or yarn
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Install dependencies:
+
+```bash
+npm install
+# or
+yarn
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start the dev server:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
+# or
+yarn dev
 ```
+
+Build for production:
+
+```bash
+npm run build
+# or
+yarn build
+```
+
+Preview the production build (locally):
+
+```bash
+npm run preview
+# or
+yarn preview
+```
+
+Lint the project:
+
+```bash
+npm run lint
+# or
+yarn lint
+```
+
+---
+
+## Development Notes
+- Source files are in `src/`.
+  - `src/pages` contains the main routes: `Home`, `Playground`, `Concepts`, `Problems`.
+  - `src/components` contains shared UI pieces like `Navbar` and `Footer`.
+- Tailwind is configured in `tailwind.config.js` and PostCSS configuration in `postcss.config.js`.
+
+If you want to add a new visual or page:
+1. Create a new page/component under `src/pages` or `src/components`.
+2. Link the page from the `Navbar` if necessary.
+3. Add visual assets to `src/assets` or `public/`.
+
+---
+
+## Contributing
+- Contributions are welcome! Open an issue or submit a PR.
+- Please follow these basic rules:
+  - Keep changes focused and scoped.
+  - Run linting before pushing (`npm run lint`).
+  - Add tests or a demo if the change affects visual behavior.
+
+If you'd like to help but don't know where to start, check the `pages` and `components` mentioned above — there are many filler sections labelled `Placeholder` that would make great first PRs.
+
+---
+
+## Roadmap
+- Implement the interactive playground visualizer
+- Add problem practice pages with step-by-step solutions
+- Add TypeScript-backed algorithm steps and controls for speed/step-by-step debugging
+
+---
+
+## License
+License file not included yet. If you want to open-source this project, add a `LICENSE` file (MIT is a common choice) and update the footer and README accordingly.
+
+---
+
+## Contact
+For questions, ideas, and contributions, open an issue or reach out to the repository owner.
+
+Thanks for checking out ArrayViz! 👋
