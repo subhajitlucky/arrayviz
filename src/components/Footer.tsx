@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Footer() {
     return (
       <footer className="w-full border-t">
@@ -11,9 +13,9 @@ function Footer() {
   
             <div>
               <div className="font-semibold mb-1">Learn</div>
-              <div>Concepts</div>
-              <div>Playground</div>
-              <div>Problems</div>
+              <div><Link to="/concepts">Concepts</Link></div>
+              <div><Link to="/playground">Playground</Link></div>
+              <div><Link to="/problems">Problems</Link></div>
             </div>
   
             <div>

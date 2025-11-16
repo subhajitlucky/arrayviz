@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function Home() {
   const demoArray = [2, 5, 9, 3, 7]
   const highlightIndex = 2
@@ -12,8 +14,8 @@ function Home() {
             Everything about arrays, explained with clean visuals, patterns, and focused practice. No noise. Just what you need to go from basics to interviews.
           </p>
           <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <a href="/concepts" className="px-4 py-2 border text-sm">Explore Concepts</a>
-            <a href="/playground" className="px-4 py-2 border text-sm">Open Playground</a>
+            <Link to="/concepts" className="px-4 py-2 border text-sm">Explore Concepts</Link>
+            <Link to="/playground" className="px-4 py-2 border text-sm">Open Playground</Link>
           </div>
         </div>
 
