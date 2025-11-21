@@ -1,83 +1,195 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRight, BookOpen, Code2, Terminal, CheckCircle2, Zap, Layers, Search, Hash, MoveRight } from 'lucide-react'
 
 function Home() {
-  const demoArray = [2, 5, 9, 3, 7]
-  const highlightIndex = 2
+  const [demoArray] = useState([2, 5, 9, 3, 7])
+  const [highlightIndex, setHighlightIndex] = useState(2)
+
+  const handleArrayClick = (index: number) => {
+    setHighlightIndex(index)
+  }
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8 flex flex-col gap-10">
-      {/* Hero */}
-      <section className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-xl">
-          <h1 className="text-3xl md:text-4xl font-semibold mb-1">Master Arrays Visually.</h1>
-          <p className="text-sm md:text-base">
-            Everything about arrays, explained with clean visuals, patterns, and focused practice. No noise. Just what you need to go from basics to interviews.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-3 text-sm">
-            <Link to="/concepts" className="px-4 py-2 border text-sm">Explore Concepts</Link>
-            <Link to="/playground" className="px-4 py-2 border text-sm">Open Playground</Link>
+    <main className="flex flex-col min-h-screen">
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white pt-16 pb-24 px-4">
+        <div className="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-12">
+
+          {/* Hero Text */}
+          <div className="max-w-2xl flex flex-col gap-6 z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-medium w-fit">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              Interactive Learning Platform
+            </div>
+
+            <h1 className="text-5xl md:text-6xl font-bold text-slate-900 tracking-tight leading-tight">
+              Master Arrays <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+                Visually & Intuitively.
+              </span>
+            </h1>
+
+            <p className="text-lg text-slate-600 leading-relaxed max-w-lg">
+              Stop memorizing code. Start visualizing patterns. From basic memory layout to complex sliding window algorithms.
+            </p>
+
+            <div className="flex flex-wrap gap-4 mt-2">
+              <Link to="/concepts" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200">
+                Start Learning <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/playground" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-slate-700 border border-slate-200 rounded-lg font-semibold hover:bg-slate-50 transition-colors">
+                Try Playground <Terminal className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
+
+          {/* Interactive Demo */}
+          <div className="w-full md:w-auto z-10">
+            <div className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 w-full max-w-sm mx-auto transform hover:scale-105 transition-transform duration-300">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Live Memory View</span>
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 rounded-full bg-red-400"></div>
+                  <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                  <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                </div>
+              </div>
+
+              <div className="flex justify-center gap-2 mb-6">
+                {demoArray.map((value, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleArrayClick(index)}
+                    className={`relative w-12 h-12 flex items-center justify-center rounded-lg border-2 text-lg font-bold transition-all duration-200 ${index === highlightIndex
+                      ? 'border-blue-500 bg-blue-50 text-blue-600 -translate-y-1 shadow-md'
+                      : 'border-slate-200 text-slate-600 hover:border-slate-300'
+                      }`}
+                  >
+                    {value}
+                    <span className="absolute -bottom-6 text-[10px] font-normal text-slate-400 font-mono">
+                      {index}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="bg-slate-50 rounded-lg p-3 font-mono text-xs text-slate-600 border border-slate-100">
+                <div className="flex justify-between border-b border-slate-200 pb-2 mb-2">
+                  <span>Access Time:</span>
+                  <span className="text-green-600 font-bold">O(1)</span>
+                </div>
+                <div className="space-y-1">
+                  <p><span className="text-purple-600">const</span> arr = [{demoArray.join(', ')}];</p>
+                  <p>
+                    arr[<span className="text-blue-600 font-bold">{highlightIndex}</span>]
+                    <span className="text-slate-400"> // Returns </span>
+                    <span className="text-orange-600 font-bold">{demoArray[highlightIndex]}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        {/* Mini visual demo (skeleton) */}
-        <div className="mt-4 md:mt-0 w-full md:w-64 border p-3 text-xs flex flex-col gap-2">
-          <div className="text-[10px] uppercase">Mini array demo</div>
-          <div className="flex gap-1">
-            {demoArray.map((value, index) => (
-              <div
-                key={index}
-                className={`flex h-10 w-10 items-center justify-center border text-xs ${
-                  index === highlightIndex ? 'bg-gray-100' : ''
-                }`}
-              >
-                {value}
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+        <div className="absolute top-0 left-0 -translate-y-12 -translate-x-12 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-20 bg-white px-4">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="group p-8 rounded-2xl bg-slate-50 hover:bg-blue-50 transition-colors duration-300 border border-slate-100 hover:border-blue-100">
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Learn Concepts</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Deep dive into array internals. Understand memory allocation, addressing math, and complexity analysis.
+              </p>
+            </div>
+
+            <div className="group p-8 rounded-2xl bg-slate-50 hover:bg-purple-50 transition-colors duration-300 border border-slate-100 hover:border-purple-100">
+              <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Code2 className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Visual Playground</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Don't just read. Experiment. Insert, delete, and shift elements in real-time to see how indices change.
+              </p>
+            </div>
+
+            <div className="group p-8 rounded-2xl bg-slate-50 hover:bg-orange-50 transition-colors duration-300 border border-slate-100 hover:border-orange-100">
+              <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Zap className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Master Patterns</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Conquer coding interviews by mastering the underlying patterns: Sliding Window, Two Pointers, and more.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Patterns Section */}
+      <section className="py-20 bg-slate-50 px-4">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Essential Patterns</h2>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              These aren't just algorithms. They are the building blocks of efficient problem solving.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: "Two Pointers", icon: <MoveRight className="w-5 h-5" />, desc: "Solve pair problems in O(N)." },
+              { title: "Sliding Window", icon: <Layers className="w-5 h-5" />, desc: "Optimize subarray queries." },
+              { title: "Prefix Sums", icon: <Hash className="w-5 h-5" />, desc: "Range queries in O(1)." },
+              { title: "Binary Search", icon: <Search className="w-5 h-5" />, desc: "Logarithmic search on sorted data." },
+              { title: "In-place Ops", icon: <Zap className="w-5 h-5" />, desc: "Optimize space complexity." },
+              { title: "Kadane's Algo", icon: <CheckCircle2 className="w-5 h-5" />, desc: "Max subarray sum in O(N)." },
+            ].map((pattern, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-xl border border-slate-200 hover:shadow-lg transition-shadow flex items-start gap-4">
+                <div className="p-2 bg-slate-100 rounded-lg text-slate-700">
+                  {pattern.icon}
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900">{pattern.title}</h4>
+                  <p className="text-sm text-slate-500 mt-1">{pattern.desc}</p>
+                </div>
               </div>
             ))}
           </div>
-          <div className="flex justify-between text-[10px]">
-            <span>Indices: 0 1 2 3 4</span>
-            <span>Access index 2 → {demoArray[highlightIndex]}</span>
+        </div>
+      </section>
+
+      {/* Footer Promise */}
+      <section className="border-t border-slate-200 bg-white py-12 px-4">
+        <div className="mx-auto max-w-6xl flex flex-wrap justify-center gap-8 text-sm text-slate-500 font-medium">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-green-500" /> Free & Open Source
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-green-500" /> No Login Required
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-green-500" /> Visual-First Approach
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-green-500" /> Interview Ready
           </div>
         </div>
       </section>
 
-      {/* Learn / Play / Practice */}
-      <section className="grid gap-4 md:grid-cols-3 text-sm">
-        <div className="border p-3 flex flex-col gap-1">
-          <h2 className="font-semibold">Learn</h2>
-          <p>Understand arrays, memory, complexity, and core operations with clear visuals.</p>
-        </div>
-        <div className="border p-3 flex flex-col gap-1">
-          <h2 className="font-semibold">Play</h2>
-          <p>Use the playground to see inserts, deletes, shifts, and pointers in action.</p>
-        </div>
-        <div className="border p-3 flex flex-col gap-1">
-          <h2 className="font-semibold">Practice</h2>
-          <p>Solve curated array problems with step-wise explanations (coming next).</p>
-        </div>
-      </section>
-
-      {/* Patterns you will master */}
-      <section className="flex flex-col gap-2 text-sm">
-        <h2 className="font-semibold text-base">Patterns you&apos;ll master</h2>
-        <div className="flex flex-wrap gap-2 text-xs">
-          <div className="px-3 py-2 border">Two Pointers</div>
-          <div className="px-3 py-2 border">Sliding Window</div>
-          <div className="px-3 py-2 border">Prefix / Suffix Sums</div>
-          <div className="px-3 py-2 border">Kadane&apos;s (Max Subarray)</div>
-          <div className="px-3 py-2 border">Binary Search on Arrays</div>
-          <div className="px-3 py-2 border">In-place Transformations</div>
-        </div>
-      </section>
-
-      {/* Promise strip */}
-      <section className="flex flex-wrap gap-3 text-xs">
-        <div className="px-3 py-2 border">Free</div>
-        <div className="px-3 py-2 border">Open Source</div>
-        <div className="px-3 py-2 border">Beginner → Interview Ready</div>
-        <div className="px-3 py-2 border">Visual-first</div>
-        <div className="px-3 py-2 border">Frontend-only, fast</div>
-      </section>
     </main>
   )
 }
