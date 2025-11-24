@@ -17,8 +17,8 @@ export default function ComplexityBox({ activeOperation }: ComplexityBoxProps) {
     const info = activeOperation ? complexities[activeOperation] : null;
 
     return (
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm h-full">
-            <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm h-full">
+            <h4 className="font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
                 <span className="w-2 h-6 bg-indigo-500 rounded-full"></span>
                 Complexity Analysis
             </h4>
@@ -26,27 +26,27 @@ export default function ComplexityBox({ activeOperation }: ComplexityBoxProps) {
             {info ? (
                 <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                        <div className="p-2 bg-orange-50 text-orange-600 rounded-lg">
+                        <div className="p-2 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-lg">
                             <Clock className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-xs text-slate-500 font-bold uppercase">Time Complexity</p>
-                            <p className="text-lg font-bold text-slate-800">{info.time}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase">Time Complexity</p>
+                            <p className="text-lg font-bold text-slate-800 dark:text-slate-100">{info.time}</p>
                         </div>
                     </div>
 
                     <div className="flex items-start gap-3">
-                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                        <div className="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg">
                             <Database className="w-5 h-5" />
                         </div>
                         <div>
-                            <p className="text-xs text-slate-500 font-bold uppercase">Space Complexity</p>
-                            <p className="text-lg font-bold text-slate-800">{info.space}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase">Space Complexity</p>
+                            <p className="text-lg font-bold text-slate-800 dark:text-slate-100">{info.space}</p>
                         </div>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100">
-                        <p className="text-xs text-slate-500 italic">{info.note}</p>
+                    <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 italic">{info.note}</p>
                     </div>
                 </div>
             ) : (

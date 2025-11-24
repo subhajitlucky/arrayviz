@@ -17,14 +17,14 @@ export default function TwoDArrayVisualizer() {
     const ELEMENT_SIZE = 4;
 
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-lg mb-6">2D Array in Memory (Row-Major)</h3>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h3 className="font-bold text-lg mb-6 text-slate-900 dark:text-slate-100">2D Array in Memory (Row-Major)</h3>
 
             <div className="flex flex-col gap-12">
 
                 {/* 2D View */}
                 <div className="flex flex-col items-center">
-                    <h4 className="text-sm font-semibold text-slate-500 uppercase mb-4">Logical View (Grid)</h4>
+                    <h4 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase mb-4">Logical View (Grid)</h4>
                     <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
                         {matrix.map((row, rIdx) => (
                             row.map((_, cIdx) => {
@@ -37,8 +37,8 @@ export default function TwoDArrayVisualizer() {
                                         className={`
                       w-12 h-12 flex items-center justify-center border-2 rounded cursor-pointer transition-all
                       ${isHovered
-                                                ? 'border-indigo-500 bg-indigo-50 text-indigo-700 scale-110 shadow-lg z-10'
-                                                : 'border-slate-200 bg-white text-slate-600'}
+                                                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 scale-110 shadow-lg z-10'
+                                                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300'}
                     `}
                                     >
                                         <span className="text-xs font-mono">[{rIdx}][{cIdx}]</span>
@@ -51,7 +51,7 @@ export default function TwoDArrayVisualizer() {
 
                 {/* Linear View */}
                 <div className="flex flex-col w-full overflow-hidden">
-                    <h4 className="text-sm font-semibold text-slate-500 uppercase mb-4 text-center">Physical View (Linear Memory)</h4>
+                    <h4 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase mb-4 text-center">Physical View (Linear Memory)</h4>
 
                     <div className="overflow-x-auto pb-6 pt-2 px-4">
                         <div className="flex items-start gap-0 w-fit mx-auto">
@@ -65,7 +65,7 @@ export default function TwoDArrayVisualizer() {
                                         {/* Row Label (Only at start of row block) */}
                                         {isRowStart && (
                                             <div className="absolute -top-8 left-0 right-0 text-center">
-                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${cell.r % 2 === 0 ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-purple-50 text-purple-600 border-purple-100'
+                                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${cell.r % 2 === 0 ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-800' : 'bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-800'
                                                     }`}>
                                                     Row {cell.r}
                                                 </span>
@@ -79,14 +79,14 @@ export default function TwoDArrayVisualizer() {
                                                 onMouseLeave={() => setHoveredCell(null)}
                                                 className={`
                                                     w-14 h-14 flex flex-col items-center justify-center border-y border-r first:border-l transition-all cursor-pointer relative
-                                                    ${isHovered ? 'bg-indigo-50 z-10' : 'bg-white'}
-                                                    ${cell.r % 2 === 0 ? 'border-blue-200' : 'border-purple-200'}
+                                                    ${isHovered ? 'bg-indigo-50 dark:bg-indigo-900/20 z-10' : 'bg-white dark:bg-slate-800'}
+                                                    ${cell.r % 2 === 0 ? 'border-blue-200 dark:border-blue-800' : 'border-purple-200 dark:border-purple-800'}
                                                 `}
                                             >
-                                                <span className={`font-bold ${isHovered ? 'text-indigo-700' : 'text-slate-700'}`}>
+                                                <span className={`font-bold ${isHovered ? 'text-indigo-700 dark:text-indigo-400' : 'text-slate-700 dark:text-slate-300'}`}>
                                                     {cell.val}
                                                 </span>
-                                                <span className="text-[9px] text-slate-400 font-mono mt-0.5">
+                                                <span className="text-[9px] text-slate-400 dark:text-slate-500 font-mono mt-0.5">
                                                     {cell.r},{cell.c}
                                                 </span>
                                             </div>
@@ -94,8 +94,8 @@ export default function TwoDArrayVisualizer() {
 
                                         {/* Address */}
                                         <div className="mt-2 flex flex-col items-center">
-                                            <div className="h-2 w-px bg-slate-200 mb-1"></div>
-                                            <span className={`text-[10px] font-mono ${isHovered ? 'text-indigo-600 font-bold' : 'text-slate-400'}`}>
+                                            <div className="h-2 w-px bg-slate-200 dark:bg-slate-700 mb-1"></div>
+                                            <span className={`text-[10px] font-mono ${isHovered ? 'text-indigo-600 dark:text-indigo-400 font-bold' : 'text-slate-400 dark:text-slate-500'}`}>
                                                 {address}
                                             </span>
                                         </div>
@@ -104,16 +104,16 @@ export default function TwoDArrayVisualizer() {
                             })}
 
                             {/* Continuation dots */}
-                            <div className="flex items-center h-14 pl-2 text-slate-300">
+                            <div className="flex items-center h-14 pl-2 text-slate-300 dark:text-slate-600">
                                 <ArrowRight className="w-5 h-5" />
                             </div>
                         </div>
                     </div>
 
-                    <p className="mt-2 text-xs text-slate-500 text-center">
-                        <span className="inline-block w-3 h-3 bg-blue-50 border border-blue-200 rounded-sm align-middle mr-1"></span> Row 0
+                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 text-center">
+                        <span className="inline-block w-3 h-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-sm align-middle mr-1"></span> Row 0
                         <span className="mx-2">|</span>
-                        <span className="inline-block w-3 h-3 bg-purple-50 border border-purple-200 rounded-sm align-middle mr-1"></span> Row 1
+                        <span className="inline-block w-3 h-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-sm align-middle mr-1"></span> Row 1
                         <span className="mx-2">|</span>
                         Memory addresses are contiguous.
                     </p>

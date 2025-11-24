@@ -44,31 +44,31 @@ export default function DynamicArrayVisualizer() {
     }
 
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-lg mb-4">Dynamic Array Internals</h3>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h3 className="font-bold text-lg mb-4 text-slate-900 dark:text-slate-100">Dynamic Array Internals</h3>
 
             {/* Metrics */}
             <div className="flex gap-8 mb-6">
                 <div>
-                    <span className="text-xs font-bold text-slate-400 uppercase block">Size</span>
-                    <span className="text-2xl font-bold text-slate-800">{elements.length}</span>
+                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Size</span>
+                    <span className="text-2xl font-bold text-slate-800 dark:text-slate-100">{elements.length}</span>
                 </div>
                 <div>
-                    <span className="text-xs font-bold text-slate-400 uppercase block">Capacity</span>
-                    <span className="text-2xl font-bold text-blue-600">{capacity}</span>
+                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Capacity</span>
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{capacity}</span>
                 </div>
                 <div className="flex-1 text-right">
-                    <span className="text-xs font-bold text-slate-400 uppercase block">Status</span>
-                    <span className="text-sm font-medium text-slate-600">{message}</span>
+                    <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Status</span>
+                    <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{message}</span>
                 </div>
             </div>
 
             {/* Visualizer */}
-            <div className="relative border-2 border-dashed border-slate-300 rounded-lg p-4 min-h-[120px] flex items-center gap-2 overflow-x-auto bg-slate-50 transition-all duration-500"
+            <div className="relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg p-4 min-h-[120px] flex items-center gap-2 overflow-x-auto bg-slate-50 dark:bg-slate-800/50 transition-all duration-500"
                 style={{ borderColor: isResizing ? '#f59e0b' : '#cbd5e1' }}
             >
                 {isResizing && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-20 backdrop-blur-[1px]">
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-slate-900/50 z-20 backdrop-blur-[1px]">
                         <div className="flex flex-col items-center gap-2">
                             <RefreshCw className="w-8 h-8 text-amber-500 animate-spin" />
                             <span className="text-amber-600 font-bold text-sm">Resizing & Copying...</span>
@@ -93,7 +93,7 @@ export default function DynamicArrayVisualizer() {
                     {Array.from({ length: capacity - elements.length }).map((_, idx) => (
                         <div
                             key={`empty-${idx}`}
-                            className="w-12 h-12 flex-shrink-0 border-2 border-slate-200 rounded border-dashed flex items-center justify-center text-slate-300 text-xs"
+                            className="w-12 h-12 flex-shrink-0 border-2 border-slate-200 dark:border-slate-700 rounded border-dashed flex items-center justify-center text-slate-300 dark:text-slate-600 text-xs"
                         >
                             Empty
                         </div>
@@ -113,7 +113,7 @@ export default function DynamicArrayVisualizer() {
                 <button
                     onClick={reset}
                     disabled={isResizing}
-                    className="flex items-center gap-2 px-4 py-2 bg-white text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 disabled:opacity-50 transition-colors font-medium"
+                    className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors font-medium"
                 >
                     <RefreshCw className="w-4 h-4" /> Reset
                 </button>

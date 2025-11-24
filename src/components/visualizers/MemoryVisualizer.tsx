@@ -9,25 +9,25 @@ export default function MemoryVisualizer() {
     const indices = Array.from({ length: arrayLength }, (_, i) => i)
 
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-lg mb-4">Interactive Memory Layout</h3>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h3 className="font-bold text-lg mb-4 text-slate-900 dark:text-slate-100">Interactive Memory Layout</h3>
 
             <div className="flex flex-wrap gap-6 mb-6">
                 <div className="flex flex-col gap-1">
-                    <label className="text-xs font-semibold text-slate-500 uppercase">Base Address</label>
+                    <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Base Address</label>
                     <input
                         type="number"
                         value={baseAddress}
                         onChange={(e) => setBaseAddress(Number(e.target.value))}
-                        className="border rounded px-2 py-1 w-24 font-mono text-sm"
+                        className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 rounded px-2 py-1 w-24 font-mono text-sm text-slate-900 dark:text-slate-100"
                     />
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label className="text-xs font-semibold text-slate-500 uppercase">Element Size (Bytes)</label>
+                    <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Element Size (Bytes)</label>
                     <select
                         value={elementSize}
                         onChange={(e) => setElementSize(Number(e.target.value))}
-                        className="border rounded px-2 py-1 font-mono text-sm"
+                        className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 rounded px-2 py-1 font-mono text-sm text-slate-900 dark:text-slate-100"
                     >
                         <option value={1}>1 (char)</option>
                         <option value={4}>4 (int)</option>
@@ -50,25 +50,25 @@ export default function MemoryVisualizer() {
                                 onMouseLeave={() => setHighlightIndex(null)}
                             >
                                 {/* Index Label */}
-                                <span className="mb-2 text-xs font-mono text-slate-400">Index {index}</span>
+                                <span className="mb-2 text-xs font-mono text-slate-400 dark:text-slate-500">Index {index}</span>
 
                                 {/* Memory Block */}
                                 <div className={`
                   w-20 h-20 border-2 flex items-center justify-center font-bold text-xl transition-all duration-200
                   ${isHighlighted
-                                        ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-md -translate-y-1 z-10'
-                                        : 'border-slate-300 bg-slate-50 text-slate-400'}
+                                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-md -translate-y-1 z-10'
+                                        : 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500'}
                 `}>
                                     data[{index}]
                                 </div>
 
                                 {/* Address Label */}
                                 <div className="mt-2 flex flex-col items-center">
-                                    <span className={`text-xs font-mono font-bold ${isHighlighted ? 'text-blue-600' : 'text-slate-500'}`}>
+                                    <span className={`text-xs font-mono font-bold ${isHighlighted ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>
                                         {address}
                                     </span>
                                     {isHighlighted && (
-                                        <div className="absolute top-full mt-1 whitespace-nowrap z-20 bg-slate-800 text-white text-[10px] px-2 py-1 rounded">
+                                        <div className="absolute top-full mt-1 whitespace-nowrap z-20 bg-slate-800 dark:bg-slate-700 text-white text-[10px] px-2 py-1 rounded">
                                             {baseAddress} + ({index} × {elementSize})
                                         </div>
                                     )}
@@ -79,12 +79,12 @@ export default function MemoryVisualizer() {
                 </div>
             </div>
 
-            <div className="mt-6 bg-slate-50 p-3 rounded text-sm text-slate-600 border border-slate-100">
+            <div className="mt-6 bg-slate-50 dark:bg-slate-800/50 p-3 rounded text-sm text-slate-600 dark:text-slate-300 border border-slate-100 dark:border-slate-800">
                 <p>
-                    <strong>Formula:</strong> <code className="bg-white px-1 border rounded">Address = Base + (Index × Size)</code>
+                    <strong>Formula:</strong> <code className="bg-white dark:bg-slate-900 px-1 border border-slate-200 dark:border-slate-700 rounded">Address = Base + (Index × Size)</code>
                 </p>
                 {highlightIndex !== null && (
-                    <p className="mt-1 text-blue-600">
+                    <p className="mt-1 text-blue-600 dark:text-blue-400">
                         Address of index {highlightIndex} = {baseAddress} + ({highlightIndex} × {elementSize}) = <strong>{baseAddress + (highlightIndex * elementSize)}</strong>
                     </p>
                 )}

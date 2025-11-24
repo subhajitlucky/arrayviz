@@ -101,7 +101,7 @@ export default function OperationVisualizer() {
                 <div className="lg:col-span-2 flex flex-col gap-6">
 
                     {/* Visualizer Area */}
-                    <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+                    <div className="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
                         <h3 className="absolute top-4 left-4 font-bold text-slate-400 text-sm uppercase tracking-wider">Memory Visualization</h3>
 
                         <div className="flex items-end gap-2 overflow-x-auto max-w-full p-4 pt-12">
@@ -116,9 +116,9 @@ export default function OperationVisualizer() {
                                             {/* Binary Search Pointers */}
                                             {searchRange && (
                                                 <div className="h-6 relative w-full flex justify-center">
-                                                    {idx === searchRange.low && <span className="absolute -top-6 text-[10px] font-bold text-green-600">L</span>}
-                                                    {idx === searchRange.high && <span className="absolute -top-6 text-[10px] font-bold text-red-600">H</span>}
-                                                    {idx === searchRange.mid && <span className="absolute -top-6 text-[10px] font-bold text-blue-600">M</span>}
+                                                    {idx === searchRange.low && <span className="absolute -top-6 text-[10px] font-bold text-green-600 dark:text-green-400">L</span>}
+                                                    {idx === searchRange.high && <span className="absolute -top-6 text-[10px] font-bold text-red-600 dark:text-red-400">H</span>}
+                                                    {idx === searchRange.mid && <span className="absolute -top-6 text-[10px] font-bold text-blue-600 dark:text-blue-400">M</span>}
                                                 </div>
                                             )}
 
@@ -133,21 +133,21 @@ export default function OperationVisualizer() {
                                                     opacity: 1,
                                                     y: 0,
                                                     scale: 1,
-                                                    backgroundColor: highlightIndices.includes(idx) ? '#eff6ff' : '#ffffff',
+                                                    backgroundColor: highlightIndices.includes(idx) ? '#3b82f6' : '#ffffff',
                                                     borderColor: highlightIndices.includes(idx) ? '#3b82f6' : '#6366f1',
                                                     color: highlightIndices.includes(idx) ? '#1d4ed8' : '#4338ca'
                                                 }}
                                                 exit={{ opacity: 0, y: 20, scale: 0.8 }}
                                                 transition={{ duration: 0.4 }}
-                                                className="relative w-14 h-14 flex items-center justify-center border-2 font-bold rounded-lg shadow-sm z-10 text-lg"
+                                                className="relative w-14 h-14 flex items-center justify-center border-2 font-bold rounded-lg shadow-sm z-10 text-lg bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100"
                                             >
                                                 {val}
                                             </motion.div>
 
                                             {/* Memory Address (Hex) */}
                                             <div className="flex flex-col items-center">
-                                                <div className="h-4 w-px bg-slate-200"></div>
-                                                <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1 rounded border border-slate-100">
+                                                <div className="h-4 w-px bg-slate-200 dark:bg-slate-700"></div>
+                                                <span className="text-[10px] font-mono text-slate-400 bg-slate-50 dark:bg-slate-800 px-1 rounded border border-slate-100 dark:border-slate-700">
                                                     0x{(BASE_ADDRESS + (idx * ELEMENT_SIZE)).toString(16).toUpperCase()}
                                                 </span>
                                             </div>
@@ -159,7 +159,7 @@ export default function OperationVisualizer() {
 
                         {/* Status Message */}
                         <div className="absolute bottom-4 left-0 right-0 text-center px-4">
-                            <p className="text-sm font-medium text-slate-600 bg-slate-50 inline-block px-3 py-1 rounded-full border border-slate-100">
+                            <p className="text-sm font-medium text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 inline-block px-3 py-1 rounded-full border border-slate-100 dark:border-slate-700">
                                 {message}
                             </p>
                         </div>
