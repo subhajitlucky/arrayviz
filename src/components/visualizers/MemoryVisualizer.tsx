@@ -36,7 +36,7 @@ export default function MemoryVisualizer() {
                 </div>
             </div>
 
-            <div className="relative pt-8 pb-4 overflow-x-auto max-w-full">
+            <div className="relative pt-8 pb-8 overflow-x-auto max-w-full">
                 <div className="flex gap-1 min-w-max">
                     {indices.map((index) => {
                         const address = baseAddress + (index * elementSize)
