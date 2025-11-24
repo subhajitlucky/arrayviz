@@ -13,6 +13,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Concepts', path: '/concepts' },
+    { name: 'Patterns', path: '/patterns' },
     { name: 'Playground', path: '/playground' },
     { name: 'Problems', path: '/problems' },
   ]

@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import Concepts from './pages/Concepts'
+import Patterns from './pages/Patterns'
 import Playground from './pages/Playground'
 import Problems from './pages/Problems'
 
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/concepts" element={<Concepts />} />
+            <Route path="/patterns" element={<Patterns />} />
             <Route path="/playground" element={<Playground />} />
             <Route path="/problems" element={<Problems />} />
           </Routes>
