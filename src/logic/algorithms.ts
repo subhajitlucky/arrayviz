@@ -397,6 +397,41 @@ export function* fastSlowPointersSteps(arr: number[]): Generator<AlgorithmStep> 
 
 // 5b. Fast & Slow Pointers - Floyd's Cycle Detection (Find Duplicate)
 export function* floydsCycleDetectionSteps(arr: number[]): Generator<AlgorithmStep> {
+    // Build Graph for Visualization
+    const root: TreeNode = { val: 0, id: '0', children: [] };
+    const nodesMap = new Map<string, TreeNode>();
+    nodesMap.set('0', root);
+
+    // Create nodes for all reachable indices
+    // Note: This is a specific visualization for the "Array as Linked List" concept
+    // We'll build the graph structure based on index -> value (next index)
+
+    // We need to handle cycles, so we can't just build a simple tree.
+    // However, our TreeRenderer supports children. We can simulate the path.
+    // For a true cycle visualization, we'd need a general GraphRenderer, but we can
+    // approximate it by showing the path being traced or just stick to array view 
+    // if the tree view is strictly hierarchical.
+
+    // Actually, for Cycle Detection, the "Linear Array with Pointers" is often VERY confusing.
+    // A better approach with our current tools:
+    // Use the Tree view but only show the *path traversed so far* as a tree/line,
+    // and when we hit a visited node, show it as a "back edge" or just highlight it.
+
+    // Let's stick to the Array view for now but enhance the description, 
+    // because our TreeRenderer assumes a hierarchy and might get stuck or look weird with cycles 
+    // unless we implement a specific Cycle Graph renderer.
+    // The user asked for "Graph Tree concept" to be in tree mode. 
+    // Floyd's is technically a graph problem (Linked List cycle), but visualizing it 
+    // as a static tree is hard because of the cycle.
+
+    // ALTERNATIVE: Use the 'grid' view to show nodes as a directed graph? 
+    // No, grid is for matrices.
+
+    // DECISION: Keep Floyd's as Array for now, as it's "Fast & Slow Pointers on Array".
+    // Transforming it to a graph visualization without a proper Graph Force Layout engine
+    // might be misleading or ugly using a hierarchical Tree renderer.
+    // I will add a note in the description that we are treating values as next pointers.
+
     yield {
         array: [...arr],
         highlightIndices: [],
@@ -406,7 +441,7 @@ export function* floydsCycleDetectionSteps(arr: number[]): Generator<AlgorithmSt
             { name: 'Goal', value: 'Find duplicate' }
         ],
         log: "Floyd's Cycle Detection - Finding Duplicate",
-        description: "Treat array values as pointers. Duplicate creates a cycle!"
+        description: "Treat array values as pointers: index i points to index arr[i]. Duplicate creates a cycle!"
     };
 
     let slow = 0;
@@ -928,7 +963,9 @@ export function* greedyIntervalsSteps(intervals: number[][]): Generator<Algorith
         pointers: [],
         variables: [{ name: 'Intervals', value: intervals.map(i => `[${i[0]},${i[1]}]`).join(' ') }],
         log: "Sorting intervals by start time",
-        description: "First step: Sort all intervals by their start time."
+        description: "First step: Sort all intervals by their start time.",
+        visualizationType: 'grid',
+        grid: intervals
     };
 
     const sorted = [...intervals].sort((a, b) => a[0] - b[0]);
@@ -949,7 +986,9 @@ export function* greedyIntervalsSteps(intervals: number[][]): Generator<Algorith
                     { name: 'Action', value: 'Merge!' }
                 ],
                 log: `Intervals overlap! Merging [${current[0]},${current[1]}] with [${last[0]},${last[1]}]`,
-                description: "Intervals overlap. Merge them!"
+                description: "Intervals overlap. Merge them!",
+                visualizationType: 'grid',
+                grid: sorted
             };
             last[1] = Math.max(last[1], current[1]);
         } else {
@@ -963,7 +1002,9 @@ export function* greedyIntervalsSteps(intervals: number[][]): Generator<Algorith
                     { name: 'Action', value: 'Add separately' }
                 ],
                 log: `No overlap. Adding [${current[0]},${current[1]}] as new interval`,
-                description: "No overlap. Keep as separate interval."
+                description: "No overlap. Keep as separate interval.",
+                visualizationType: 'grid',
+                grid: sorted
             };
         }
     }
@@ -977,7 +1018,9 @@ export function* greedyIntervalsSteps(intervals: number[][]): Generator<Algorith
             { name: 'Result', value: merged.map(i => `[${i[0]},${i[1]}]`).join(' ') }
         ],
         log: `Merged into ${merged.length} intervals`,
-        description: "All overlapping intervals merged!"
+        description: "All overlapping intervals merged!",
+        visualizationType: 'grid',
+        grid: merged
     };
 }
 
