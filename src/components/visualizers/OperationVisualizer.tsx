@@ -1,85 +1,191 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Trash2, RotateCcw } from 'lucide-react'
+import ControlPanel from '../ControlPanel'
+import CodeDisplay from '../CodeDisplay'
+import ComplexityBox from '../ComplexityBox'
+import { insertAt, deleteAt, search, updateAt, sortArray, binarySearchSteps, type ArrayOperationResult } from '../../logic/array'
 
 export default function OperationVisualizer() {
-    const [array, setArray] = useState([10, 20, 30, 40, 50])
+    const [array, setArray] = useState<number[]>([10, 20, 30, 40, 50])
     const [message, setMessage] = useState("Ready to operate.")
+    const [activeOperation, setActiveOperation] = useState<'insert' | 'delete' | 'search' | 'update' | 'binarySearch' | 'sort' | null>(null)
+    const [highlightIndices, setHighlightIndices] = useState<number[]>([])
+    const [searchRange, setSearchRange] = useState<{ low: number; high: number; mid: number } | null>(null)
+    const [isSorted, setIsSorted] = useState(false)
 
-    const insertAtIndex = (index: number, value: number) => {
-        if (array.length >= 8) {
-            setMessage("Array is full! (Max 8 elements for demo)")
+    const handleOperationResult = (result: ArrayOperationResult, op: 'insert' | 'delete' | 'search' | 'update' | 'sort') => {
+        setArray(result.newArray)
+        setMessage(result.log)
+        setHighlightIndices(result.highlightIndices)
+        setActiveOperation(op)
+        setSearchRange(null)
+
+        if (op === 'sort') setIsSorted(true)
+        else if (op === 'insert' || op === 'update' || op === 'delete') setIsSorted(false) // Modifying might break sort order
+
+        // Clear highlights after a delay
+        setTimeout(() => {
+            setHighlightIndices([])
+        }, 2000)
+    }
+
+    const onInsert = (index: number, value: number) => {
+        const result = insertAt(array, index, value)
+        handleOperationResult(result, 'insert')
+    }
+
+    const onDelete = (index: number) => {
+        const result = deleteAt(array, index)
+        handleOperationResult(result, 'delete')
+    }
+
+    const onSearch = (value: number) => {
+        const result = search(array, value)
+        handleOperationResult(result, 'search')
+    }
+
+    const onUpdate = (index: number, value: number) => {
+        const result = updateAt(array, index, value)
+        handleOperationResult(result, 'update')
+    }
+
+    const onSort = () => {
+        const result = sortArray(array)
+        handleOperationResult(result, 'sort')
+    }
+
+    const onBinarySearch = async (value: number) => {
+        if (!isSorted) {
+            setMessage("Error: Array must be sorted for Binary Search. Click 'Sort Array' first.")
             return
         }
-        setMessage(`Inserting ${value} at index ${index}... Shifting elements right.`)
-        const newArr = [...array]
-        newArr.splice(index, 0, value)
-        setArray(newArr)
+
+        setActiveOperation('binarySearch')
+        const steps = binarySearchSteps(array, value)
+
+        for (const step of steps) {
+            setMessage(step.log)
+            setHighlightIndices(step.highlightIndices)
+            if (step.searchRange) setSearchRange(step.searchRange)
+
+            // Wait for 1.5 seconds to visualize the step
+            await new Promise(resolve => setTimeout(resolve, 1500))
+        }
+
+        // Clear range after done
+        setTimeout(() => {
+            setSearchRange(null)
+            setHighlightIndices([])
+        }, 2000)
     }
 
-    const deleteAtIndex = (index: number) => {
-        if (array.length <= 0) return
-        setMessage(`Deleting element at index ${index}... Shifting elements left.`)
-        const newArr = [...array]
-        newArr.splice(index, 1)
-        setArray(newArr)
-    }
-
-    const reset = () => {
+    const onReset = () => {
         setArray([10, 20, 30, 40, 50])
         setMessage("Reset to initial state.")
+        setActiveOperation(null)
+        setHighlightIndices([])
+        setSearchRange(null)
+        setIsSorted(true) // Initial state is sorted
     }
 
+    // Base memory address for visualization (e.g., 0x100)
+    const BASE_ADDRESS = 0x100;
+    const ELEMENT_SIZE = 4; // 4 bytes for an integer
+
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-lg mb-4">Visualizing Operations</h3>
+        <div className="flex flex-col gap-6">
+            {/* Top Section: Visualizer & Controls */}
+            <div className="grid lg:grid-cols-3 gap-6">
 
-            {/* Controls */}
-            <div className="flex flex-wrap gap-3 mb-8">
-                <button
-                    onClick={() => insertAtIndex(2, 99)}
-                    className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 border border-green-200 rounded hover:bg-green-100 text-sm font-medium"
-                >
-                    <Plus className="w-4 h-4" /> Insert 99 at Index 2
-                </button>
-                <button
-                    onClick={() => deleteAtIndex(2)}
-                    className="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-700 border border-red-200 rounded hover:bg-red-100 text-sm font-medium"
-                >
-                    <Trash2 className="w-4 h-4" /> Delete Index 2
-                </button>
-                <button
-                    onClick={reset}
-                    className="flex items-center gap-2 px-3 py-2 bg-slate-50 text-slate-700 border border-slate-200 rounded hover:bg-slate-100 text-sm font-medium ml-auto"
-                >
-                    <RotateCcw className="w-4 h-4" /> Reset
-                </button>
-            </div>
+                {/* Left: Visualizer & Controls (Takes 2 cols) */}
+                <div className="lg:col-span-2 flex flex-col gap-6">
 
-            {/* Visualization */}
-            <div className="relative h-24 flex items-center gap-2 overflow-hidden border-b border-slate-100 pb-8">
-                <AnimatePresence mode='popLayout'>
-                    {array.map((val, idx) => (
-                        <motion.div
-                            key={`${val}-${idx}`} // Using idx in key to force re-render on shift for demo clarity, or unique ID ideally
-                            layout
-                            initial={{ opacity: 0, y: -20, scale: 0.8 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 20, scale: 0.8 }}
-                            transition={{ duration: 0.4 }}
-                            className="relative w-12 h-12 flex items-center justify-center bg-white border-2 border-indigo-500 text-indigo-700 font-bold rounded-lg shadow-sm z-10"
-                        >
-                            {val}
-                            <span className="absolute -bottom-6 text-[10px] text-slate-400 font-mono font-normal">
-                                {idx}
-                            </span>
-                        </motion.div>
-                    ))}
-                </AnimatePresence>
-            </div>
+                    {/* Visualizer Area */}
+                    <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+                        <h3 className="absolute top-4 left-4 font-bold text-slate-400 text-sm uppercase tracking-wider">Memory Visualization</h3>
 
-            <div className="mt-4 text-sm text-slate-600 italic">
-                Status: {message}
+                        <div className="flex items-end gap-2 overflow-x-auto max-w-full p-4 pt-12">
+                            <AnimatePresence mode='popLayout'>
+                                {array.map((val, idx) => {
+                                    // Determine if this index is outside the current binary search range
+                                    const isDimmed = searchRange && (idx < searchRange.low || idx > searchRange.high);
+
+                                    return (
+                                        <div key={`${idx}-${val}`} className={`flex flex-col items-center gap-2 transition-opacity duration-300 ${isDimmed ? 'opacity-20 blur-[1px]' : 'opacity-100'}`}>
+
+                                            {/* Binary Search Pointers */}
+                                            {searchRange && (
+                                                <div className="h-6 relative w-full flex justify-center">
+                                                    {idx === searchRange.low && <span className="absolute -top-6 text-[10px] font-bold text-green-600">L</span>}
+                                                    {idx === searchRange.high && <span className="absolute -top-6 text-[10px] font-bold text-red-600">H</span>}
+                                                    {idx === searchRange.mid && <span className="absolute -top-6 text-[10px] font-bold text-blue-600">M</span>}
+                                                </div>
+                                            )}
+
+                                            {/* Index Label */}
+                                            <span className="text-xs font-mono text-slate-400 mb-1">[{idx}]</span>
+
+                                            {/* Array Element Box */}
+                                            <motion.div
+                                                layout
+                                                initial={{ opacity: 0, y: -20, scale: 0.8 }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    y: 0,
+                                                    scale: 1,
+                                                    backgroundColor: highlightIndices.includes(idx) ? '#eff6ff' : '#ffffff',
+                                                    borderColor: highlightIndices.includes(idx) ? '#3b82f6' : '#6366f1',
+                                                    color: highlightIndices.includes(idx) ? '#1d4ed8' : '#4338ca'
+                                                }}
+                                                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                                                transition={{ duration: 0.4 }}
+                                                className="relative w-14 h-14 flex items-center justify-center border-2 font-bold rounded-lg shadow-sm z-10 text-lg"
+                                            >
+                                                {val}
+                                            </motion.div>
+
+                                            {/* Memory Address (Hex) */}
+                                            <div className="flex flex-col items-center">
+                                                <div className="h-4 w-px bg-slate-200"></div>
+                                                <span className="text-[10px] font-mono text-slate-400 bg-slate-50 px-1 rounded border border-slate-100">
+                                                    0x{(BASE_ADDRESS + (idx * ELEMENT_SIZE)).toString(16).toUpperCase()}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </AnimatePresence>
+                        </div>
+
+                        {/* Status Message */}
+                        <div className="absolute bottom-4 left-0 right-0 text-center px-4">
+                            <p className="text-sm font-medium text-slate-600 bg-slate-50 inline-block px-3 py-1 rounded-full border border-slate-100">
+                                {message}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Controls */}
+                    <ControlPanel
+                        onInsert={onInsert}
+                        onDelete={onDelete}
+                        onSearch={onSearch}
+                        onUpdate={onUpdate}
+                        onReset={onReset}
+                        onSort={onSort}
+                        onBinarySearch={onBinarySearch}
+                    />
+                </div>
+
+                {/* Right: Code & Complexity (Takes 1 col) */}
+                <div className="flex flex-col gap-6">
+                    <div className="flex-1 min-h-[200px]">
+                        <ComplexityBox activeOperation={activeOperation} />
+                    </div>
+                    <div className="flex-1 min-h-[200px]">
+                        <CodeDisplay activeOperation={activeOperation} />
+                    </div>
+                </div>
             </div>
         </div>
     )

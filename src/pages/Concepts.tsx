@@ -9,6 +9,7 @@ import {
 import MemoryVisualizer from '../components/visualizers/MemoryVisualizer'
 import OperationVisualizer from '../components/visualizers/OperationVisualizer'
 import TwoDArrayVisualizer from '../components/visualizers/TwoDArrayVisualizer'
+import DynamicArrayVisualizer from '../components/visualizers/DynamicArrayVisualizer'
 
 function Concepts() {
   return (
@@ -77,7 +78,13 @@ function Concepts() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold border-l-4 border-teal-500 pl-3">{dynamicArrays.title}</h2>
         <p className="text-gray-700">{dynamicArrays.description}</p>
-        <div className="grid gap-4 sm:grid-cols-3">
+
+        {/* Dynamic Array Visualizer */}
+        <div className="mt-6">
+          <DynamicArrayVisualizer />
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-3 mt-4">
           {dynamicArrays.features.map((feature, idx) => (
             <div key={idx} className="bg-teal-50 border border-teal-200 p-4 rounded-lg">
               <h4 className="font-bold text-teal-800 mb-1">{feature.label}</h4>
