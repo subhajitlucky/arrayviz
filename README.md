@@ -1,116 +1,55 @@
-# ArrayViz
+# ArrayViz - Master Array Algorithms Visually
 
-ArrayViz is a lightweight, frontend-first app for learning and visualizing array data-structures and common array algorithms. It focuses on clear, interactive visual explanations to help beginners and interview prep learners master array patterns and operations.
+ArrayViz is an interactive educational platform designed to help students and developers master array data structures and algorithms through visualization. Whether you're a first-year Computer Science student or preparing for technical interviews, ArrayViz provides a comprehensive, visual, and intuitive way to learn.
 
-🚀 Built with React, TypeScript, Vite, and Tailwind CSS
+## 🚀 Features
 
----
+### 1. **Core Concepts Visualized**
+   - **Memory Layout**: See how arrays are stored in contiguous memory.
+   - **Indexing**: Understand O(1) access with visual formulas.
+   - **Operations**: Interactive visualizations for Insertion, Deletion, and Traversal.
+   - **Dynamic Arrays**: Watch how arrays resize and handle capacity.
+   - **2D Arrays**: Visualize row-major order and matrix traversal.
 
-## Features
-- Interactive playground for visualizing array operations (insert, delete, traverse)
-- Concept pages that explain array fundamentals, time/space complexity, and memory layout
-- Problem list (coming soon) grouped by difficulty and pattern
-- Visual-first approach with concise examples and step-by-step illustrations
+### 2. **Algorithmic Patterns**
+   Master 21 essential coding patterns with step-by-step visualizations:
+   - **Two Pointers**: Visualizing convergence and swapping.
+   - **Sliding Window**: Dynamic window resizing and tracking.
+   - **Fast & Slow Pointers**: Cycle detection (Floyd's) and middle finding.
+   - **Prefix Sums**: Range query optimization.
+   - **Binary Search**: Logarithmic search visualization.
+   - **Kadane's Algorithm**: Maximum subarray sum.
+   - **And many more...** (Backtracking, DP, Graph traversals, etc.)
 
-## Tech Stack
-- React + TypeScript
-- Vite for fast dev/build
-- Tailwind CSS for styling
-- ESLint + Prettier for linting
+### 3. **Interactive Playground**
+   - Experiment with array operations in real-time.
+   - See immediate visual feedback for your actions.
 
-## Demo / Routes
-- / — Home: Overview and mini visual demo
-- /playground — Interactive array playground
-- /concepts — Concept pages and fundamentals
-- /problems — Practice problems list (work-in-progress)
+### 4. **Modern Tech Stack**
+   - Built with **React**, **TypeScript**, and **Tailwind CSS**.
+   - **Framer Motion** for smooth, beautiful animations.
+   - **Vite** for lightning-fast development.
 
----
+## 🔗 Repository
 
-## Getting Started
+Contribute to the project or star it on GitHub:
+[https://github.com/subhajitlucky/arrayviz](https://github.com/subhajitlucky/arrayviz)
 
-Prerequisites:
-- Node.js >= 18 (recommended)
-- npm or yarn
+## 🛠️ Getting Started
 
-Install dependencies:
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/subhajitlucky/arrayviz.git
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Run the development server:
+    ```bash
+    npm run dev
+    ```
 
-```bash
-npm install
-# or
-yarn
-```
+## 🤝 Contributing
 
-Start the dev server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Build for production:
-
-```bash
-npm run build
-# or
-yarn build
-```
-
-Preview the production build (locally):
-
-```bash
-npm run preview
-# or
-yarn preview
-```
-
-Lint the project:
-
-```bash
-npm run lint
-# or
-yarn lint
-```
-
----
-
-## Development Notes
-- Source files are in `src/`.
-  - `src/pages` contains the main routes: `Home`, `Playground`, `Concepts`, `Problems`.
-  - `src/components` contains shared UI pieces like `Navbar` and `Footer`.
-- Tailwind is configured in `tailwind.config.js` and PostCSS configuration in `postcss.config.js`.
-
-If you want to add a new visual or page:
-1. Create a new page/component under `src/pages` or `src/components`.
-2. Link the page from the `Navbar` if necessary.
-3. Add visual assets to `src/assets` or `public/`.
-
----
-
-## Contributing
-- Contributions are welcome! Open an issue or submit a PR.
-- Please follow these basic rules:
-  - Keep changes focused and scoped.
-  - Run linting before pushing (`npm run lint`).
-  - Add tests or a demo if the change affects visual behavior.
-
-If you'd like to help but don't know where to start, check the `pages` and `components` mentioned above — there are many filler sections labelled `Placeholder` that would make great first PRs.
-
----
-
-## Roadmap
-- Implement the interactive playground visualizer
-- Add problem practice pages with step-by-step solutions
-- Add TypeScript-backed algorithm steps and controls for speed/step-by-step debugging
-
----
-
-## License
-License file not included yet. If you want to open-source this project, add a `LICENSE` file (MIT is a common choice) and update the footer and README accordingly.
-
----
-
-## Contact
-For questions, ideas, and contributions, open an issue or reach out to the repository owner.
-
-Thanks for checking out ArrayViz! 👋
+We welcome contributions! Whether it's adding new patterns, improving visualizations, or fixing bugs, feel free to open a Pull Request.

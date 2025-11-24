@@ -17,7 +17,7 @@ export default function TwoDArrayVisualizer() {
     const ELEMENT_SIZE = 4;
 
     return (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <h3 className="font-bold text-lg mb-6 text-slate-900 dark:text-slate-100">2D Array in Memory (Row-Major)</h3>
 
             <div className="flex flex-col gap-12">

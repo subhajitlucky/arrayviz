@@ -20,7 +20,7 @@ export default function ControlPanel({ onInsert, onDelete, onSearch, onUpdate, o
 
     return (
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col gap-4">
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
                     <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-1">Index</label>
                     <input

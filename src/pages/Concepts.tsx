@@ -10,24 +10,28 @@ import MemoryVisualizer from '../components/visualizers/MemoryVisualizer'
 import OperationVisualizer from '../components/visualizers/OperationVisualizer'
 import TwoDArrayVisualizer from '../components/visualizers/TwoDArrayVisualizer'
 import DynamicArrayVisualizer from '../components/visualizers/DynamicArrayVisualizer'
+import LearningPath from '../components/LearningPath'
 
 function Concepts() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-12 flex flex-col gap-12">
+    <main className="mx-auto max-w-5xl w-full px-4 py-8 md:py-12 flex flex-col gap-12 overflow-hidden">
 
       {/* Header */}
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">Array Concepts</h1>
-        <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto">
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">Array Concepts</h1>
+        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-sm md:text-base">
           Understand the building blocks of arrays. From memory layout to Big-O complexity.
         </p>
       </div>
 
+      {/* Learning Path */}
+      <LearningPath />
+
       {/* Definition Section */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold border-l-4 border-blue-500 pl-3 text-slate-900 dark:text-white">{arrayDefinition.title}</h2>
-        <p className="text-gray-700 dark:text-slate-300 leading-relaxed">{arrayDefinition.description}</p>
-        <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-slate-300 bg-gray-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-800">
+      <section id="definition" className="space-y-4 scroll-mt-24 w-full">
+        <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-blue-500 pl-3 text-slate-900 dark:text-white break-words">{arrayDefinition.title}</h2>
+        <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-sm md:text-base break-words">{arrayDefinition.description}</p>
+        <ul className="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 p-4 rounded-lg border border-slate-200 dark:border-slate-800 text-sm md:text-base break-words">
           {arrayDefinition.keyPoints.map((point, idx) => (
             <li key={idx}>{point}</li>
           ))}
@@ -35,13 +39,13 @@ function Concepts() {
       </section>
 
       {/* Indexing Section */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold border-l-4 border-purple-500 pl-3 text-slate-900 dark:text-white">{arrayIndexing.title}</h2>
-        <p className="text-gray-700 dark:text-slate-300">{arrayIndexing.description}</p>
-        <div className="bg-slate-900 dark:bg-black text-slate-50 p-4 rounded-lg font-mono text-sm shadow-md border border-slate-700">
-          <div className="mb-2 text-gray-400">// Memory Address Calculation</div>
-          <div>{arrayIndexing.formula}</div>
-          <div className="mt-2 text-green-400">{arrayIndexing.example}</div>
+      <section className="space-y-4 w-full">
+        <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-purple-500 pl-3 text-slate-900 dark:text-white break-words">{arrayIndexing.title}</h2>
+        <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base break-words">{arrayIndexing.description}</p>
+        <div className="bg-slate-900 dark:bg-black text-slate-50 p-4 rounded-lg font-mono text-xs md:text-sm shadow-md border border-slate-700 overflow-x-auto max-w-full">
+          <div className="mb-2 text-slate-400">// Memory Address Calculation</div>
+          <div className="whitespace-nowrap">{arrayIndexing.formula}</div>
+          <div className="mt-2 text-green-400 whitespace-nowrap">{arrayIndexing.example}</div>
         </div>
 
         {/* Memory Visualizer */}
@@ -51,8 +55,8 @@ function Concepts() {
       </section>
 
       {/* Operations & Complexity */}
-      <section className="space-y-6">
-        <h2 className="text-2xl font-semibold border-l-4 border-orange-500 pl-3 text-slate-900 dark:text-white">Operations & Complexity</h2>
+      <section id="operations" className="space-y-6 scroll-mt-24">
+        <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-orange-500 pl-3 text-slate-900 dark:text-white">Operations & Complexity</h2>
 
         {/* Operation Visualizer */}
         <div className="mb-6">
@@ -68,16 +72,16 @@ function Concepts() {
                   {op.complexity}
                 </span>
               </div>
-              <p className="text-sm text-gray-700 dark:text-slate-400">{op.desc}</p>
+              <p className="text-sm text-slate-700 dark:text-slate-400">{op.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Dynamic Arrays */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold border-l-4 border-teal-500 pl-3 text-slate-900 dark:text-white">{dynamicArrays.title}</h2>
-        <p className="text-gray-700 dark:text-slate-300">{dynamicArrays.description}</p>
+      <section id="dynamic" className="space-y-4 scroll-mt-24">
+        <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-teal-500 pl-3 text-slate-900 dark:text-white">{dynamicArrays.title}</h2>
+        <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base">{dynamicArrays.description}</p>
 
         {/* Dynamic Array Visualizer */}
         <div className="mt-6">
@@ -96,11 +100,11 @@ function Concepts() {
 
       {/* Multidimensional Arrays */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold border-l-4 border-indigo-500 pl-3 text-slate-900 dark:text-white">{multidimensionalArrays.title}</h2>
-        <p className="text-gray-700 dark:text-slate-300">{multidimensionalArrays.description}</p>
-        <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-4 rounded-lg flex flex-col gap-2">
-          <p className="font-medium text-indigo-900 dark:text-indigo-200">{multidimensionalArrays.visual}</p>
-          <code className="bg-white dark:bg-slate-900 px-2 py-1 rounded border border-indigo-100 dark:border-indigo-900 text-sm font-mono text-indigo-700 dark:text-indigo-300 w-fit">
+        <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-indigo-500 pl-3 text-slate-900 dark:text-white">{multidimensionalArrays.title}</h2>
+        <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base">{multidimensionalArrays.description}</p>
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 p-4 rounded-lg flex flex-col gap-2 overflow-x-auto">
+          <p className="font-medium text-indigo-900 dark:text-indigo-200 whitespace-nowrap">{multidimensionalArrays.visual}</p>
+          <code className="bg-white dark:bg-slate-900 px-2 py-1 rounded border border-indigo-100 dark:border-indigo-900 text-sm font-mono text-indigo-700 dark:text-indigo-300 w-fit whitespace-nowrap">
             {multidimensionalArrays.example}
           </code>
         </div>
@@ -113,15 +117,15 @@ function Concepts() {
 
       {/* Common Patterns */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold border-l-4 border-pink-500 pl-3 text-slate-900 dark:text-white">Common Patterns</h2>
+        <h2 className="text-xl md:text-2xl font-semibold border-l-4 border-pink-500 pl-3 text-slate-900 dark:text-white">Common Patterns</h2>
         <div className="space-y-3">
           {commonPatterns.map((pattern) => (
-            <div key={pattern.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg hover:shadow-md transition-shadow bg-white dark:bg-slate-900">
+            <div key={pattern.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-slate-200 dark:border-slate-800 rounded-lg hover:shadow-md transition-shadow bg-white dark:bg-slate-900 gap-2">
               <div>
-                <h3 className="font-bold text-lg text-gray-800 dark:text-white">{pattern.name}</h3>
-                <p className="text-sm text-gray-600 dark:text-slate-400">{pattern.desc}</p>
+                <h3 className="font-bold text-lg text-slate-800 dark:text-white">{pattern.name}</h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400">{pattern.desc}</p>
               </div>
-              <div className="mt-2 sm:mt-0 text-xs font-medium bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-3 py-1 rounded-full">
+              <div className="text-xs font-medium bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-3 py-1 rounded-full w-fit whitespace-nowrap">
                 {pattern.useCase}
               </div>
             </div>

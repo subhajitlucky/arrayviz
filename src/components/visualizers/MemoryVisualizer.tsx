@@ -9,7 +9,7 @@ export default function MemoryVisualizer() {
     const indices = Array.from({ length: arrayLength }, (_, i) => i)
 
     return (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <h3 className="font-bold text-lg mb-4 text-slate-900 dark:text-slate-100">Interactive Memory Layout</h3>
 
             <div className="flex flex-wrap gap-6 mb-6">
@@ -36,7 +36,7 @@ export default function MemoryVisualizer() {
                 </div>
             </div>
 
-            <div className="relative pt-8 pb-4 overflow-x-auto">
+            <div className="relative pt-8 pb-4 overflow-x-auto max-w-full">
                 <div className="flex gap-1 min-w-max">
                     {indices.map((index) => {
                         const address = baseAddress + (index * elementSize)

@@ -65,7 +65,7 @@ export default function AlgorithmVisualizer({ generator, initialArray, onReset }
     return (
         <div className="flex flex-col gap-6">
             {/* Visualizer Box */}
-            <div className="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm h-[400px] flex flex-col items-center justify-center relative overflow-hidden">
 
                 {/* Array Visualization */}
                 <div className="flex items-end gap-3 overflow-x-auto max-w-full p-4 pt-12 pb-12">

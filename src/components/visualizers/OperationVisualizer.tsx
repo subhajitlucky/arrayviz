@@ -95,13 +95,13 @@ export default function OperationVisualizer() {
     return (
         <div className="flex flex-col gap-6">
             {/* Top Section: Visualizer & Controls */}
-            <div className="grid lg:grid-cols-3 gap-6">
+            <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
 
                 {/* Left: Visualizer & Controls (Takes 2 cols) */}
                 <div className="lg:col-span-2 flex flex-col gap-6">
 
                     {/* Visualizer Area */}
-                    <div className="bg-white dark:bg-slate-900 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+                    <div className="bg-white dark:bg-slate-900 p-4 md:p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
                         <h3 className="absolute top-4 left-4 font-bold text-slate-400 text-sm uppercase tracking-wider">Memory Visualization</h3>
 
                         <div className="flex items-end gap-2 overflow-x-auto max-w-full p-4 pt-12">

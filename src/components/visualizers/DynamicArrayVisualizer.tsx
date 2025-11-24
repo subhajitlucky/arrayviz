@@ -44,11 +44,11 @@ export default function DynamicArrayVisualizer() {
     }
 
     return (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
             <h3 className="font-bold text-lg mb-4 text-slate-900 dark:text-slate-100">Dynamic Array Internals</h3>
 
             {/* Metrics */}
-            <div className="flex gap-8 mb-6">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 mb-6">
                 <div>
                     <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Size</span>
                     <span className="text-2xl font-bold text-slate-800 dark:text-slate-100">{elements.length}</span>
@@ -57,7 +57,7 @@ export default function DynamicArrayVisualizer() {
                     <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Capacity</span>
                     <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">{capacity}</span>
                 </div>
-                <div className="flex-1 text-right">
+                <div className="sm:flex-1 text-left sm:text-right">
                     <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase block">Status</span>
                     <span className="text-sm font-medium text-slate-600 dark:text-slate-300">{message}</span>
                 </div>
