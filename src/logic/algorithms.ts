@@ -1,4 +1,12 @@
 
+export interface TreeNode {
+    val: number | string;
+    left?: TreeNode | null; // Keep for binary compatibility if needed, or just use children
+    right?: TreeNode | null;
+    children?: TreeNode[]; // For n-ary trees (graphs)
+    id: string; // Unique ID for key
+}
+
 export interface AlgorithmStep {
     array: number[];
     highlightIndices: number[];
@@ -6,6 +14,9 @@ export interface AlgorithmStep {
     variables: { name: string; value: string | number }[];
     log: string;
     description: string;
+    visualizationType?: 'array' | 'tree' | 'grid';
+    grid?: number[][];
+    treeRoot?: TreeNode | null;
 }
 
 // 1. Two Pointers: Two Sum (Sorted Array)
@@ -971,6 +982,7 @@ export function* greedyIntervalsSteps(intervals: number[][]): Generator<Algorith
 }
 
 // For very complex patterns, show conceptual visualization
+// For very complex patterns, show conceptual visualization
 export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmStep> {
     const flat = matrix.flat();
 
@@ -980,13 +992,14 @@ export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmSt
         pointers: [],
         variables: [{ name: 'Matrix', value: `${matrix.length}x${matrix[0]?.length || 0}` }],
         log: "Starting spiral traversal",
-        description: "Traverse matrix in spiral order: →  ↓ ← ↑"
+        description: "Traverse matrix in spiral order: →  ↓ ← ↑",
+        visualizationType: 'grid',
+        grid: matrix
     };
 
     const result: number[] = [];
     let top = 0, bottom = matrix.length - 1;
     let left = 0, right = (matrix[0]?.length || 1) - 1;
-    let idx = 0;
 
     while (top <= bottom && left <= right) {
         // Right
@@ -994,11 +1007,13 @@ export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmSt
             result.push(matrix[top][i]);
             yield {
                 array: flat,
-                highlightIndices: [idx++],
+                highlightIndices: [top * matrix[0].length + i],
                 pointers: [],
                 variables: [{ name: 'Direction', value: 'Right →' }],
                 log: `Adding ${matrix[top][i]} (row ${top}, col ${i})`,
-                description: "Moving right along top row"
+                description: "Moving right along top row",
+                visualizationType: 'grid',
+                grid: matrix
             };
         }
         top++;
@@ -1008,11 +1023,13 @@ export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmSt
             result.push(matrix[i][right]);
             yield {
                 array: flat,
-                highlightIndices: [idx++],
+                highlightIndices: [i * matrix[0].length + right],
                 pointers: [],
                 variables: [{ name: 'Direction', value: 'Down ↓' }],
                 log: `Adding ${matrix[i][right]} (row ${i}, col ${right})`,
-                description: "Moving down along right column"
+                description: "Moving down along right column",
+                visualizationType: 'grid',
+                grid: matrix
             };
         }
         right--;
@@ -1022,11 +1039,13 @@ export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmSt
                 result.push(matrix[bottom][i]);
                 yield {
                     array: flat,
-                    highlightIndices: [idx++],
+                    highlightIndices: [bottom * matrix[0].length + i],
                     pointers: [],
                     variables: [{ name: 'Direction', value: 'Left ←' }],
                     log: `Adding ${matrix[bottom][i]} (row ${bottom}, col ${i})`,
-                    description: "Moving left along bottom row"
+                    description: "Moving left along bottom row",
+                    visualizationType: 'grid',
+                    grid: matrix
                 };
             }
             bottom--;
@@ -1037,11 +1056,13 @@ export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmSt
                 result.push(matrix[i][left]);
                 yield {
                     array: flat,
-                    highlightIndices: [idx++],
+                    highlightIndices: [i * matrix[0].length + left],
                     pointers: [],
                     variables: [{ name: 'Direction', value: 'Up ↑' }],
                     log: `Adding ${matrix[i][left]} (row ${i}, col ${left})`,
-                    description: "Moving up along left column"
+                    description: "Moving up along left column",
+                    visualizationType: 'grid',
+                    grid: matrix
                 };
             }
             left++;
@@ -1054,7 +1075,9 @@ export function* matrixTraversalSteps(matrix: number[][]): Generator<AlgorithmSt
         pointers: [],
         variables: [{ name: 'Result', value: 'Complete' }],
         log: "Spiral traversal complete!",
-        description: "All elements visited in spiral order"
+        description: "All elements visited in spiral order",
+        visualizationType: 'grid',
+        grid: matrix
     };
 }
 
@@ -1063,19 +1086,33 @@ export function* backtrackingSteps(arr: number[]): Generator<AlgorithmStep> {
     const result: number[][] = [];
     const current: number[] = [];
 
-    function* generatePermutations(remaining: number[]): Generator<AlgorithmStep> {
+    // Tree Visualization Setup
+    let nodeIdCounter = 0;
+    const root: TreeNode = { val: 'Start', id: (nodeIdCounter++).toString(), children: [] };
+
+    // Map to keep track of tree nodes for each step of recursion
+    // Key: path string (e.g., "1,2"), Value: TreeNode
+    const treeMap = new Map<string, TreeNode>();
+    treeMap.set('', root);
+
+    function* generatePermutations(remaining: number[], parentPath: string): Generator<AlgorithmStep> {
+        const parentNode = treeMap.get(parentPath)!;
+        const parentId = parseInt(parentNode.id);
+
         if (remaining.length === 0) {
             result.push([...current]);
             yield {
                 array: [...current],
-                highlightIndices: Array.from({ length: current.length }, (_, i) => i),
+                highlightIndices: [parentId], // Highlight leaf node
                 pointers: [],
                 variables: [
                     { name: 'Found Permutation!', value: current.join(', ') },
                     { name: 'Total Found', value: result.length }
                 ],
                 log: `Found permutation: [${current.join(', ')}]`,
-                description: "Complete permutation! Backtrack to try next option."
+                description: "Complete permutation! Backtrack to try next option.",
+                visualizationType: 'tree',
+                treeRoot: root
             };
             return;
         }
@@ -1084,37 +1121,61 @@ export function* backtrackingSteps(arr: number[]): Generator<AlgorithmStep> {
             const choice = remaining[i];
             current.push(choice);
 
+            // Add node to tree
+            const currentPath = parentPath ? `${parentPath},${choice}` : `${choice}`;
+            const newNodeId = nodeIdCounter++;
+            const newNode: TreeNode = { val: choice, id: newNodeId.toString(), children: [] };
+
+            if (!parentNode.children) parentNode.children = [];
+            parentNode.children.push(newNode);
+            treeMap.set(currentPath, newNode);
+
             yield {
                 array: [...current, ...remaining.filter((_, idx) => idx !== i)],
-                highlightIndices: [current.length - 1],
-                pointers: [{ index: current.length - 1, label: 'Choose', color: 'text-green-600' }],
+                highlightIndices: [newNodeId],
+                pointers: [{ index: newNodeId, label: 'Choose', color: 'text-green-600' }],
                 variables: [
                     { name: 'Current', value: current.join(', ') },
                     { name: 'Remaining', value: remaining.filter((_, idx) => idx !== i).join(', ') }
                 ],
                 log: `Choose ${choice}. Current: [${current.join(', ')}]`,
-                description: `Make choice: add ${choice} to current permutation.`
+                description: `Make choice: add ${choice} to current permutation.`,
+                visualizationType: 'tree',
+                treeRoot: root
             };
 
             const newRemaining = remaining.filter((_, idx) => idx !== i);
-            yield* generatePermutations(newRemaining);
+            yield* generatePermutations(newRemaining, currentPath);
 
             current.pop();
             yield {
                 array: [...current, ...remaining],
-                highlightIndices: current.length > 0 ? [current.length - 1] : [],
-                pointers: [{ index: current.length, label: 'Undo', color: 'text-red-600' }],
+                highlightIndices: [parentId], // Highlight parent when backtracking
+                pointers: [{ index: parentId, label: 'Back', color: 'text-red-600' }],
                 variables: [
                     { name: 'Backtrack', value: `Remove ${choice}` },
                     { name: 'Current', value: current.join(', ') || 'empty' }
                 ],
                 log: `Backtrack: remove ${choice}`,
-                description: "Undo choice. Try next option."
+                description: "Undo choice. Try next option.",
+                visualizationType: 'tree',
+                treeRoot: root
             };
         }
     }
 
-    yield* generatePermutations(arr);
+    yield {
+        array: arr,
+        highlightIndices: [0], // Highlight root
+        pointers: [],
+        variables: [{ name: 'Start', value: 'Permutations' }],
+        log: "Starting backtracking...",
+        description: "Explore all possible permutations using a decision tree.",
+        visualizationType: 'tree',
+        treeRoot: root
+    };
+
+    yield* generatePermutations(arr, '');
 
     yield {
         array: arr,
@@ -1124,7 +1185,9 @@ export function* backtrackingSteps(arr: number[]): Generator<AlgorithmStep> {
             { name: 'Total Permutations', value: result.length }
         ],
         log: `Found all ${result.length} permutations!`,
-        description: "Backtracking complete. Explored all possibilities."
+        description: "Backtracking complete. Explored all possibilities.",
+        visualizationType: 'tree',
+        treeRoot: root
     };
 }
 
@@ -1169,14 +1232,22 @@ export function* meetInMiddleSteps(arr: number[]): Generator<AlgorithmStep> {
 }
 
 export function* dfsBfsSteps(graph: number[][]): Generator<AlgorithmStep> {
-    const flat = graph.flat();
+    const flat = graph.flat(); // Keep for array view fallback if needed, but we focus on tree
+
+    // Initialize Tree Root
+    const root: TreeNode = { val: 0, id: '0', children: [] };
+    const nodesMap = new Map<string, TreeNode>();
+    nodesMap.set('0', root);
+
     yield {
         array: flat,
         highlightIndices: [],
         pointers: [],
         variables: [{ name: 'Algorithm', value: 'BFS' }],
         log: "Starting BFS from node 0",
-        description: "Visit all nodes level by level using a queue."
+        description: "Visit all nodes level by level using a queue.",
+        visualizationType: 'tree',
+        treeRoot: root
     };
 
     const visited = new Set<number>();
@@ -1185,6 +1256,7 @@ export function* dfsBfsSteps(graph: number[][]): Generator<AlgorithmStep> {
 
     while (queue.length > 0) {
         const node = queue.shift()!;
+
         yield {
             array: flat,
             highlightIndices: [node],
@@ -1194,14 +1266,41 @@ export function* dfsBfsSteps(graph: number[][]): Generator<AlgorithmStep> {
                 { name: 'Queue', value: `[${queue.join(', ')}]` }
             ],
             log: `Visiting node ${node}`,
-            description: "Process current node, add unvisited neighbors to queue."
+            description: "Process current node, add unvisited neighbors to queue.",
+            visualizationType: 'tree',
+            treeRoot: root
         };
 
-        // Add neighbors (simplified - assumes adjacency list representation)
-        for (let neighbor = 0; neighbor < flat.length; neighbor++) {
-            if (!visited.has(neighbor) && flat[neighbor] > 0) {
+        // Get neighbors from adjacency list
+        const neighbors = graph[node] || [];
+
+        for (const neighbor of neighbors) {
+            if (!visited.has(neighbor)) {
                 visited.add(neighbor);
                 queue.push(neighbor);
+
+                // Add to visualization tree
+                const parentNode = nodesMap.get(node.toString());
+                if (parentNode) {
+                    const childNode: TreeNode = { val: neighbor, id: neighbor.toString(), children: [] };
+                    if (!parentNode.children) parentNode.children = [];
+                    parentNode.children.push(childNode);
+                    nodesMap.set(neighbor.toString(), childNode);
+                }
+
+                yield {
+                    array: flat,
+                    highlightIndices: [neighbor],
+                    pointers: [{ index: neighbor, label: 'Add', color: 'text-green-600' }],
+                    variables: [
+                        { name: 'Found Neighbor', value: neighbor },
+                        { name: 'Parent', value: node }
+                    ],
+                    log: `Found unvisited neighbor ${neighbor} of ${node}`,
+                    description: `Add ${neighbor} to queue and tree.`,
+                    visualizationType: 'tree',
+                    treeRoot: root
+                };
             }
         }
     }
@@ -1212,18 +1311,47 @@ export function* dfsBfsSteps(graph: number[][]): Generator<AlgorithmStep> {
         pointers: [],
         variables: [{ name: 'Visited', value: Array.from(visited).join(', ') }],
         log: "BFS complete!",
-        description: "All reachable nodes visited."
+        description: "All reachable nodes visited.",
+        visualizationType: 'tree',
+        treeRoot: root
     };
 }
 
 export function* treeTraversalSteps(arr: number[]): Generator<AlgorithmStep> {
+    // Helper to build tree from array (BFS/Level Order construction)
+    const buildTree = (data: number[]): TreeNode | null => {
+        if (!data.length) return null;
+        const root: TreeNode = { val: data[0], id: '0' };
+        const queue: { node: TreeNode, index: number }[] = [{ node: root, index: 0 }];
+
+        while (queue.length) {
+            const { node, index } = queue.shift()!;
+            const leftIdx = 2 * index + 1;
+            const rightIdx = 2 * index + 2;
+
+            if (leftIdx < data.length) {
+                node.left = { val: data[leftIdx], id: leftIdx.toString() };
+                queue.push({ node: node.left, index: leftIdx });
+            }
+            if (rightIdx < data.length) {
+                node.right = { val: data[rightIdx], id: rightIdx.toString() };
+                queue.push({ node: node.right, index: rightIdx });
+            }
+        }
+        return root;
+    };
+
+    const root = buildTree(arr);
+
     yield {
         array: arr,
         highlightIndices: [],
         pointers: [],
         variables: [{ name: 'Traversal', value: 'Inorder' }],
         log: "Inorder: Left → Root → Right",
-        description: "For BST, gives sorted order!"
+        description: "For BST, gives sorted order!",
+        visualizationType: 'tree',
+        treeRoot: root
     };
 
     // Simplified: just show sequence
@@ -1234,7 +1362,9 @@ export function* treeTraversalSteps(arr: number[]): Generator<AlgorithmStep> {
             pointers: [{ index: i, label: 'Visit', color: 'text-blue-600' }],
             variables: [{ name: 'Node', value: arr[i] }],
             log: `Visiting node ${arr[i]}`,
-            description: "Visit nodes in order: left subtree, root, right subtree"
+            description: "Visit nodes in order: left subtree, root, right subtree",
+            visualizationType: 'tree',
+            treeRoot: root
         };
     }
 
@@ -1244,12 +1374,20 @@ export function* treeTraversalSteps(arr: number[]): Generator<AlgorithmStep> {
         pointers: [],
         variables: [{ name: 'Result', value: arr.join(' → ') }],
         log: "Traversal complete!",
-        description: "All nodes visited in inorder sequence"
+        description: "All nodes visited in inorder sequence",
+        visualizationType: 'tree',
+        treeRoot: root
     };
 }
 
 export function* shortestPathSteps(graph: number[][], start: number = 0, end: number = 4): Generator<AlgorithmStep> {
     const flat = graph.flat();
+
+    // Initialize Tree Root
+    const root: TreeNode = { val: start, id: start.toString(), children: [] };
+    const nodesMap = new Map<string, TreeNode>();
+    nodesMap.set(start.toString(), root);
+
     yield {
         array: flat,
         highlightIndices: [start],
@@ -1259,11 +1397,15 @@ export function* shortestPathSteps(graph: number[][], start: number = 0, end: nu
             { name: 'To', value: end }
         ],
         log: `Finding shortest path from ${start} to ${end}`,
-        description: "BFS guarantees shortest path in unweighted graph."
+        description: "BFS guarantees shortest path in unweighted graph.",
+        visualizationType: 'tree',
+        treeRoot: root
     };
 
     const queue: [number, number][] = [[start, 0]];
     const visited = new Set([start]);
+    // Track parent pointers to reconstruct path
+    const parents = new Map<number, number>();
 
     while (queue.length > 0) {
         const [node, dist] = queue.shift()!;
@@ -1277,26 +1419,53 @@ export function* shortestPathSteps(graph: number[][], start: number = 0, end: nu
                 { name: 'Distance', value: dist }
             ],
             log: `At node ${node}, distance ${dist}`,
-            description: "Exploring neighbors at this distance level."
+            description: "Exploring neighbors at this distance level.",
+            visualizationType: 'tree',
+            treeRoot: root
         };
 
         if (node === end) {
+            // Reconstruct path
+            const path = [end];
+            let curr = end;
+            while (parents.has(curr)) {
+                curr = parents.get(curr)!;
+                path.unshift(curr);
+            }
+
             yield {
                 array: flat,
-                highlightIndices: [end],
+                highlightIndices: path,
                 pointers: [{ index: end, label: 'Found!', color: 'text-green-600' }],
-                variables: [{ name: 'Shortest Distance', value: dist }],
+                variables: [
+                    { name: 'Shortest Distance', value: dist },
+                    { name: 'Path', value: path.join(' → ') }
+                ],
                 log: `Reached destination! Shortest path: ${dist}`,
-                description: "Found shortest path using BFS!"
+                description: "Found shortest path using BFS!",
+                visualizationType: 'tree',
+                treeRoot: root
             };
             return;
         }
 
-        // Simplified: check adjacent indices
-        for (let neighbor = 0; neighbor < flat.length; neighbor++) {
-            if (!visited.has(neighbor) && Math.abs(neighbor - node) === 1) {
+        // Get neighbors
+        const neighbors = graph[node] || [];
+
+        for (const neighbor of neighbors) {
+            if (!visited.has(neighbor)) {
                 visited.add(neighbor);
+                parents.set(neighbor, node);
                 queue.push([neighbor, dist + 1]);
+
+                // Add to visualization tree
+                const parentNode = nodesMap.get(node.toString());
+                if (parentNode) {
+                    const childNode: TreeNode = { val: neighbor, id: neighbor.toString(), children: [] };
+                    if (!parentNode.children) parentNode.children = [];
+                    parentNode.children.push(childNode);
+                    nodesMap.set(neighbor.toString(), childNode);
+                }
             }
         }
     }
@@ -1317,7 +1486,9 @@ export function* dp2DSteps(grid: number[][]): Generator<AlgorithmStep> {
             { name: 'Problem', value: 'Unique Paths' }
         ],
         log: "Computing unique paths in grid",
-        description: "dp[i][j] = number of ways to reach cell (i,j)"
+        description: "dp[i][j] = number of ways to reach cell (i,j)",
+        visualizationType: 'grid',
+        grid: dp
     };
 
     // Base case
@@ -1330,7 +1501,9 @@ export function* dp2DSteps(grid: number[][]): Generator<AlgorithmStep> {
         pointers: [],
         variables: [{ name: 'Base Case', value: 'First row/col = 1' }],
         log: "Initialize first row and column to 1",
-        description: "Only one way to reach cells in first row/column"
+        description: "Only one way to reach cells in first row/column",
+        visualizationType: 'grid',
+        grid: dp
     };
 
     for (let i = 1; i < m; i++) {
@@ -1347,7 +1520,9 @@ export function* dp2DSteps(grid: number[][]): Generator<AlgorithmStep> {
                     { name: 'dp[i][j]', value: dp[i][j] }
                 ],
                 log: `dp[${i}][${j}] = ${dp[i - 1][j]} + ${dp[i][j - 1]} = ${dp[i][j]}`,
-                description: "Paths from top + paths from left"
+                description: "Paths from top + paths from left",
+                visualizationType: 'grid',
+                grid: dp
             };
         }
     }
@@ -1358,7 +1533,9 @@ export function* dp2DSteps(grid: number[][]): Generator<AlgorithmStep> {
         pointers: [{ index: m * n - 1, label: 'Answer', color: 'text-green-600' }],
         variables: [{ name: 'Total Paths', value: dp[m - 1][n - 1] }],
         log: `Total unique paths: ${dp[m - 1][n - 1]}`,
-        description: "DP table complete!"
+        description: "DP table complete!",
+        visualizationType: 'grid',
+        grid: dp
     };
 }
 
@@ -1377,7 +1554,9 @@ export function* knapsackSteps(items: number[][], capacity: number = 50): Genera
             { name: 'Items', value: n }
         ],
         log: "0/1 Knapsack Problem",
-        description: "Maximize value within weight capacity. Each item: take it or leave it."
+        description: "Maximize value within weight capacity. Each item: take it or leave it.",
+        visualizationType: 'grid',
+        grid: Array(n + 1).fill(0).map(() => Array(capacity + 1).fill(0))
     };
 
     const dp: number[][] = Array(n + 1).fill(0).map(() => Array(capacity + 1).fill(0));
@@ -1395,7 +1574,9 @@ export function* knapsackSteps(items: number[][], capacity: number = 50): Genera
                 { name: 'Weight', value: weight }
             ],
             log: `Processing item ${i}: value=${value}, weight=${weight}`,
-            description: "For each capacity, decide: include this item or not?"
+            description: "For each capacity, decide: include this item or not?",
+            visualizationType: 'grid',
+            grid: dp
         };
 
         for (let w = 1; w <= Math.min(capacity, 10); w++) { // Limit for viz
@@ -1413,7 +1594,9 @@ export function* knapsackSteps(items: number[][], capacity: number = 50): Genera
                             { name: 'New Value', value: dp[i][w] }
                         ],
                         log: `Include item ${i} at capacity ${w}`,
-                        description: `Better to include! New total: ${dp[i][w]}`
+                        description: `Better to include! New total: ${dp[i][w]}`,
+                        visualizationType: 'grid',
+                        grid: dp
                     };
                 }
             } else {
@@ -1428,7 +1611,9 @@ export function* knapsackSteps(items: number[][], capacity: number = 50): Genera
         pointers: [],
         variables: [{ name: 'Max Value', value: dp[n][capacity] }],
         log: `Maximum value achievable: ${dp[n][capacity]}`,
-        description: "Optimal selection found!"
+        description: "Optimal selection found!",
+        visualizationType: 'grid',
+        grid: dp
     };
 }
 
@@ -1444,7 +1629,9 @@ export function* lcsSteps(text1: string, text2: string): Generator<AlgorithmStep
             { name: 'Text2', value: text2 }
         ],
         log: "Longest Common Subsequence (LCS)",
-        description: "Find longest sequence appearing in both strings in same order."
+        description: "Find longest sequence appearing in both strings in same order.",
+        visualizationType: 'grid',
+        grid: Array(text1.length + 1).fill(0).map(() => Array(text2.length + 1).fill(0))
     };
 
     const m = text1.length;
@@ -1461,7 +1648,9 @@ export function* lcsSteps(text1: string, text2: string): Generator<AlgorithmStep
                     { name: 'Comparing', value: `${text1[i - 1]} vs ${text2[j - 1]}` }
                 ],
                 log: `Comparing '${text1[i - 1]}' with '${text2[j - 1]}'`,
-                description: "Check if characters match"
+                description: "Check if characters match",
+                visualizationType: 'grid',
+                grid: dp
             };
 
             if (text1[i - 1] === text2[j - 1]) {
@@ -1475,7 +1664,9 @@ export function* lcsSteps(text1: string, text2: string): Generator<AlgorithmStep
                         { name: 'LCS Length', value: dp[i][j] }
                     ],
                     log: `Match! LCS length now ${dp[i][j]}`,
-                    description: "Characters match! Extend LCS by 1."
+                    description: "Characters match! Extend LCS by 1.",
+                    visualizationType: 'grid',
+                    grid: dp
                 };
             } else {
                 dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
@@ -1489,6 +1680,8 @@ export function* lcsSteps(text1: string, text2: string): Generator<AlgorithmStep
         pointers: [],
         variables: [{ name: 'LCS Length', value: dp[m][n] }],
         log: `Longest common subsequence length: ${dp[m][n]}`,
-        description: "Found the LCS!"
+        description: "Found the LCS!",
+        visualizationType: 'grid',
+        grid: dp
     };
 }

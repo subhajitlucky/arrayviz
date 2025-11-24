@@ -25,7 +25,7 @@ import {
     lcsSteps
 } from '../logic/algorithms';
 import { binarySearchAdapter } from '../logic/binarySearchAdapter';
-import { Clock, Database, Code2, PlayCircle, Sparkles } from 'lucide-react';
+import { Clock, Database, Code2, Sparkles } from 'lucide-react';
 
 // Category labels
 const categoryLabels = {
